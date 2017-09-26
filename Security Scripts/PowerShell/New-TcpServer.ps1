@@ -1,34 +1,17 @@
-$Port = 8000
+$port = 8000
 
-$TcpListener = New-Object Net.Sockets.TcpListener $Port
-$TcpListener.Start()
-$ConnectResult = $TcpListener.BeginAcceptTcpClient($null, $null)
+$tcpListener = New-Object System.Net.Sockets.TcpListener $port
+$tcpListener.Start()
 
-Write-Verbose "Listening on 0.0.0.0:$Port [tcp]"
+$client = $tcpListener.AcceptTcpClient()
+$clientConnections = $client
+$clientStream = $client.GetStream()
+Write-Verbose ("[$(Get-Date)] New Connection from {0} <{1}>!" -f
+$client.Client.RemoteEndPoint.Address, $client.Client.RemoteEndPoint.Port) –Verbose
 
-if (!$TcpClient) { Write-Warning "Connection to $($ServerIp.IPAddressToString):$Port [tcp] failed." ; return }
 
-        
-        
-        
-
-        # Write-Verbose "Connection from $($TcpClient.Client.RemoteEndPoint.ToString()) accepted."
-
-        # $TcpStream = $TcpClient.GetStream()
-        # $Buffer = New-Object Byte[] $TcpClient.ReceiveBufferSize
-
-        # if ($PSBoundParameters.SslCn) { 
-        #     $TcpStream = New-Object System.Net.Security.SslStream($TcpStream, $false)
-        #     $Certificate = New-X509Certificate $SslCn
-        #     $TcpStream.AuthenticateAsServer($Certificate)
-        #     Write-Verbose "SSL Encrypted: $($TcpStream.IsEncrypted)"
-        # }
-        
-        # $Properties = @{
-        #     Socket = $TcpClient.Client
-        #     TcpStream = $TcpStream
-        #     Buffer = $Buffer
-        #     Read = $TcpStream.BeginRead($Buffer, 0, $Buffer.Length, $null, $null)
-        # }
-        # New-Object psobject -Property $Properties
-   
+## Client Code to Connect to Server
+# $Server = 'SERVERNAME-HERE'
+# $Endpoint = new-object System.Net.IPEndpoint ([ipaddress]::any,$SourcePort)
+# $Client = [Net.Sockets.TCPClient]$endpoint 
+# $Client.Connect($Server,15600)
