@@ -15,3 +15,4 @@ While ($Hso.IsListening) {
     $HRes.Close()
 }
 $Hso.Stop()
+$Hso.Dispose()
