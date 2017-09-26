@@ -1,3 +1,7 @@
+## New-FileServer.ps1
+# Thanks to Chris Campbell
+# https://gist.github.com/obscuresec/
+
 $Hso = New-Object Net.HttpListener
 $Hso.Prefixes.Add("http://+:8000/")
 $Hso.Start()
