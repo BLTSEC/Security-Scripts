@@ -2,9 +2,16 @@
 # Thanks to Chris Campbell
 # https://gist.github.com/obscuresec/
 
+[CmdletBinding()]
+    Param(
+       [Parameter(Mandatory=$False)]
+       $port = 8000
+    )
+
 $Hso = New-Object Net.HttpListener
-$Hso.Prefixes.Add("http://+:8000/")
+$Hso.Prefixes.Add("http://+:$port/")
 $Hso.Start()
+
 While ($Hso.IsListening) {
     $HC = $Hso.GetContext()
     $HRes = $HC.Response
