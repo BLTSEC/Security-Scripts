@@ -52,7 +52,7 @@ def client_handler(client_socket):
 
         # keep reading data until none is available
         while True:
-            data = client_socket.recv(1024)
+            data = str(client_socket.recv(1024), 'utf-8')
 
             if not data:
                 break
@@ -62,15 +62,15 @@ def client_handler(client_socket):
         # now we take these bytes and try to write them out
         try:
             file_descriptor = open(upload_destination, "wb")
-            file_descriptor.write(file_buffer)
+            file_descriptor.write(file_buffer.encode())
             file_descriptor.close()
 
             # acknowledge that we wrote the file out
-            client_socket.send(
-                "Successfully saved file to %s\r\n" % upload_destination)
-        except:
+            client_socket.send(("Successfully saved file to %s\r\n" % upload_destination).encode())
+        except Exception as err:
+            print(err)
             client_socket.send("Failed to save file %s\r\n" %
-                               upload_destination)
+                               upload_destination.encode())
 
     # check for command execution
     if execute is not None:
@@ -150,7 +150,7 @@ def client_sender(buffer):
             print (response,)
 
             # wait for more input
-            buffer = input("")
+            buffer = input(b"")
             buffer += "\n"
 
             # send it off
